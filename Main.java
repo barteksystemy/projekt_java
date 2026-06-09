@@ -19,6 +19,10 @@ public class Main {
             // Wypluwamy na ekran nasze menu
             System.out.println("\nMENU SCHRONISKA");
             System.out.println("a - Wyświetl listę wszystkich psów");
+            System.out.println("b - Szukanie domu (Adopcja)");
+            System.out.println("c - Szczepienie");
+            System.out.println("d - Odrobaczanie");
+            System.out.println("e - Czipowanie");
             System.out.println("f - Dodanie psa");
             System.out.println("q - Zakończ program");
             System.out.print("Wybierz opcję: ");
@@ -37,6 +41,37 @@ public class Main {
                         schronisko.wyswietlWszystkiePsy();
                     }
                     break;
+
+                case "b":
+                    if (schronisko.czyPuste()) {
+                        System.out.println("Brak psów do adopcji.");
+                        break;
+                    }
+                    schronisko.wyswietlWszystkiePsy();
+                    System.out.println();
+                    System.out.print("Podaj ID psa, któremu szukamy domu: ");
+                    try {
+                        int id = Integer.parseInt(scanner.nextLine());
+                        Pies piesDoAdopcji = schronisko.znajdzPsaPoId(id);
+                        schronisko.szukajDomu(piesDoAdopcji);
+                    } catch (NumberFormatException ex) {
+                        System.out.println("Błąd: Musisz podać poprawny numer (cyfrę) ID!");
+                    } catch (NieznalezionoPsaException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    break;
+
+                case "c":
+                    wykonajZabieg(schronisko, scanner, "szczepienie");
+                    break;
+
+                case "d":
+                    wykonajZabieg(schronisko, scanner, "odrobaczanie");
+                    break;
+
+                case "e":
+                    wykonajZabieg(schronisko, scanner, "czipowanie");
+                    break;    
 
                 case "f":
                     // Opcja F: Dodajemy nowego pieseła
@@ -99,5 +134,50 @@ public class Main {
         }
         // Na koniec zamykamy skaner, żeby środowisko nie krzyczało o wyciekach pamięci
         scanner.close();
+    }
+
+    private static void wykonajZabieg(Schronisko schronisko, Scanner scanner, String typZabiegu) {
+        if (schronisko.czyPuste()) {
+            System.out.println("Schronisko jest puste. Brak psów do wykonania zabiegu.");
+            return;
+        }
+
+        schronisko.wyswietlWszystkiePsy();
+        System.out.print("Podaj ID psa do " + typZabiegu + ": ");
+
+        try {
+            int id = Integer.parseInt(scanner.nextLine());
+            Pies pies = schronisko.znajdzPsaPoId(id);
+
+            if (typZabiegu.equals("szczepienie")) {
+                if (!pies.isZaszczepiony()) {
+                    pies.wykonajSzczepienie();
+                    System.out.println("Pies " + pies.getImie() + " został zaszczepiony.");
+                } else {
+                    System.out.println("Pies " + pies.getImie() + " był już wcześniej zaszczepiony!");
+                }
+            }
+            else if (typZabiegu.equals("odrobaczanie")) {
+                if (!pies.isOdrobaczony()) {
+                    pies.wykonajOdrobaczanie();
+                    System.out.println("Pies " + pies.getImie() + " został odrobaczony.");
+                } else {
+                    System.out.println("Pies " + pies.getImie() + " był już wcześniej odrobaczony!");
+                }
+            }
+            else if (typZabiegu.equals("czipowanie")) {
+                if (!pies.isZaczipowany()) {
+                    pies.wykonajCzipowanie();
+                    System.out.println("Pies " + pies.getImie() + " został zaczipowany.");
+                } else {
+                    System.out.println("Pies " + pies.getImie() + " posiada już czip!");
+                }
+            }
+
+        } catch (NumberFormatException ex) {
+            System.out.println("Błąd: ID musi być cyfrą!");
+        } catch (NieznalezionoPsaException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
