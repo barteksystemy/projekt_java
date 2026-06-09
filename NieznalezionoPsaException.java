@@ -3,7 +3,7 @@
  * Służy do sygnalizowania sytuacji, w której próbujemy znaleźć psa (np. po ID), 
  * ale nie ma go na liście w schronisku.
  */
-public class NieznalezionoPsaException extends Exception {
+public class NieznalezionoPsaException.java extends Exception {
     
     /**
      * Konstruktor klasy wyjątku, który pozwala przekazać własną wiadomość.
