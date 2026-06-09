@@ -71,19 +71,6 @@ public Pies znajdzPsaPoId(int id) throws NieznalezionoPsaException {
     // program dotrze do tego miejsca. Zamiast zwracać null, rzucamy własny wyjątek.
     throw new NieznalezionoPsaException("Nie ma psa o numerze ID: " + id);
 }
-        
-        // Jeśli pętla się zakończy i nie znajdzie psa, zwracany jest null
-        return null;
-    }
-
-    /**
-     * Getter umożliwiający innym klasom (np. warstwie logiki czy interfejsowi) 
-     * dostęp do pełnej listy psów znajdujących się w schronisku.
-     * @return Zwraca listę (ArrayList) wszystkich obiektów typu Pies.
-     */
-    public ArrayList<Pies> getListaPsow() {
-        return listaPsow;
-    }
     /**
  * Metoda symulująca proces poszukiwania domu dla konkretnego psa.
  * Szansa na adopcję zależy od jego wieku, agresji oraz odbytych zabiegów weterynaryjnych.
